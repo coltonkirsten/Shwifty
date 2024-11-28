@@ -1,5 +1,13 @@
 .App {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   text-align: center;
+}
+
+footer {
+  margin-top: auto;
+  /* Ensures footer sticks to the bottom */
 }
 
 .App-logo {

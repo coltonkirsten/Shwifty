@@ -11,12 +11,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Grid from "@mui/material/Grid";
 
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 
-
-import { generateClient} from "aws-amplify/data";
+import { generateClient } from "aws-amplify/data";
 import { Schema } from "../../amplify/data/resource";
 
 const client = generateClient<Schema>();
@@ -24,6 +24,7 @@ const client = generateClient<Schema>();
 interface Job {
   title: string;
   description?: string;
+  longdescription?: string;
 }
 
 function JobApplication() {
@@ -126,81 +127,116 @@ function JobApplication() {
             "Fill out the application form below to join our team."}
         </Typography>
       </Box>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          maxWidth: 600,
-          mx: "auto",
-        }}
-      >
-        <TextField
-          label="Full Name"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          variant="outlined"
-          required
-          fullWidth
-        />
-        <TextField
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          variant="outlined"
-          type="email"
-          required
-          fullWidth
-        />
-        <TextField
-          label="Phone Number"
-          name="phone"
-          value={formData.phone}
-          onChange={handleInputChange}
-          variant="outlined"
-          required
-          fullWidth
-        />
-        <TextField
-          label="Why are you a good fit for this job?"
-          name="reason"
-          value={formData.reason}
-          onChange={handleInputChange}
-          variant="outlined"
-          multiline
-          rows={4}
-          required
-          fullWidth
-        />
-        <Stack direction="row" alignItems="center" spacing={2}>
-          <Button variant="outlined" onClick={triggerFileInput}>
-            {formData.resume ? formData.resume.name : "Upload Resume"}
-          </Button>
-          <input
-            id="resume-upload"
-            name="resume"
-            type="file"
-            accept=".pdf,.doc,.docx"
-            onChange={handleFileChange}
-            style={{ display: "none" }}
-            required
-          />
-        </Stack>
-        <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-          <Button variant="contained" color="primary" type="submit">
-            Submit Application
-          </Button>
-          <Button variant="outlined" color="secondary" onClick={handleExit}>
-            Cancel
-          </Button>
-        </Stack>
-      </Box>
+      {/* Grid container for two-column layout */}
+      <Grid container spacing={4}   sx={{
+    minHeight: "70vh", // Adjust to fit the viewport minus header/footer height
+    alignItems: "stretch",
+  }}>
+        {/* Left Column: Application Form */}
+        <Grid item xs={12} md={6}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              maxWidth: 600,
+              mx: "auto",
+            }}
+          >
+            <TextField
+              label="Full Name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              variant="outlined"
+              required
+              fullWidth
+            />
+            <TextField
+              label="Email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              variant="outlined"
+              type="email"
+              required
+              fullWidth
+            />
+            <TextField
+              label="Phone Number"
+              name="phone"
+              value={formData.phone}
+              onChange={handleInputChange}
+              variant="outlined"
+              required
+              fullWidth
+            />
+            <TextField
+              label="Why are you a good fit for this job?"
+              name="reason"
+              value={formData.reason}
+              onChange={handleInputChange}
+              variant="outlined"
+              multiline
+              rows={4}
+              required
+              fullWidth
+            />
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <Button variant="outlined" onClick={triggerFileInput}>
+                {formData.resume ? formData.resume.name : "Upload Resume"}
+              </Button>
+              <input
+                id="resume-upload"
+                name="resume"
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+                required
+              />
+            </Stack>
+            <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+              <Button variant="contained" color="primary" type="submit">
+                Submit Application
+              </Button>
+              <Button variant="outlined" color="secondary" onClick={handleExit}>
+                Cancel
+              </Button>
+            </Stack>
+          </Box>
+        </Grid>
+        {/* Right Column: Job Long Description */}
+        <Grid item xs={12} md={6}>
+            <Box
+                sx={{
+                maxWidth: 600,
+                mx: "auto",
+                textAlign: "left",
+                maxHeight: "65vh", // Matches the form's height (adjust as needed)
+                display: "flex",
+                flexDirection: "column",
+                overflowY: "auto",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                padding: 2,
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                }}
+            >
+                <Typography
+                variant="body1"
+                component="div"
+                dangerouslySetInnerHTML={{
+                    __html: job.longdescription || "No further details provided.",
+                }}
+                />
+            </Box>
+        </Grid>
+      </Grid>
 
-      {/* Exit Confirmation Dialog */}
+      {/* Exit Confirmation Dialog (unchanged) */}
       <Dialog
         open={exitDialogOpen}
         onClose={cancelExit}
