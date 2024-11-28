@@ -71,7 +71,7 @@ function App() {
   const [value, setValue] = React.useState<number>(0);
 
   const handleChange = (
-    event: React.SyntheticEvent,
+    _event: React.SyntheticEvent,
     newValue: number
   ) => {
     setValue(newValue);
