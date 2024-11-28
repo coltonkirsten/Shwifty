@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -8,25 +8,20 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import { Amplify } from "aws-amplify";
-import outputs from "/amplify_outputs.json";
-import { generateClient, Client } from "aws-amplify/data";
-import { getUrl } from "aws-amplify/storage";
+import { generateClient } from "aws-amplify/data";
+// import { getUrl } from "aws-amplify/storage";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { Schema } from "../../amplify/data/resource";
 
-Amplify.configure(outputs);
 
 interface Application {
-  id: string;
-  jobTitle: string;
-  resumeFileName?: string;
-  resumeUrl?: string;
-}
+    id: string;
+    jobTitle: string | null;
+    resumeFileName?: string;
+    resumeUrl?: string;
+  }
 
-const client: Client<Schema> = generateClient({
-  authMode: "userPool",
-});
+const client = generateClient<Schema>();
 
 function Applications() {
   const [applications, setApplications] = useState<Application[]>([]);
@@ -39,18 +34,20 @@ function Applications() {
   async function fetchApplications() {
     try {
       const { data: apps } = await client.models.Applications.list();
-      await Promise.all(
-        apps.map(async (app) => {
-          if (app.resumeFileName) {
-            const linkToStorageFile = await getUrl({
-              path: ({ identityId }) =>
-                `resumes/${identityId}/${app.resumeFileName}`,
-            });
-            app.resumeUrl = linkToStorageFile.url;
-          }
-          return app;
-        })
-      );
+
+    //   await Promise.all(
+    //     apps.map(async (app) => {
+    //       if (app.resumeFileName) {
+    //         const linkToStorageFile = await getUrl({
+    //           path: ({ identityId }) =>
+    //             `resumes/${identityId}/${app.resumeFileName}`,
+    //         });
+    //         app.resumeUrl = linkToStorageFile.url;
+    //       }
+    //       return app;
+    //     })
+    //   );
+
       console.log(apps);
       setApplications(apps);
     } catch (error) {

@@ -12,18 +12,14 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import { Amplify } from "aws-amplify";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import outputs from "/amplify_outputs.json";
-Amplify.configure(outputs);
 
-import { generateClient, Client } from "aws-amplify/data";
+
+import { generateClient} from "aws-amplify/data";
 import { Schema } from "../../amplify/data/resource";
 
-const client: Client<Schema> = generateClient({
-  authMode: "userPool",
-});
+const client = generateClient<Schema>();
 
 interface Job {
   title: string;

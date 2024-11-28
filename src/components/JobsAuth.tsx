@@ -1,13 +1,9 @@
-import React from "react";
 import Jobs from "./Jobs";
-import outputs from "/amplify_outputs.json";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import { Amplify } from "aws-amplify";
-Amplify.configure(outputs);
 
 function JobsAuth() {
   return (
