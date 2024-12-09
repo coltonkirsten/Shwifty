@@ -37,7 +37,7 @@ function Home() {
         <Grid item xs={12} md={6}>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
             <img
-              src="../public/image.png"
+              src="/image.png"
               alt="Mobile Repair"
               style={{ maxWidth: '100%', borderRadius: '8px', boxShadow: '0 3px 5px rgba(0,0,0,0.4)' }}
             />

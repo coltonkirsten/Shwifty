@@ -60,7 +60,7 @@ function AppContent() {
             }}
           >
             <img
-              src="../public/loglogo.png"
+              src="/loglogo.png"
               alt="Shwifty Automotive Logo"
               style={{
                 height: '50px',
