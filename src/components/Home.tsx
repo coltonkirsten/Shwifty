@@ -22,7 +22,7 @@ function Home() {
               <Typography variant="h4" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
                 About Us
               </Typography>
-              <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.8 }}>
+              <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.9379 }}>
                 Shwifty Automotive is dedicated to providing top-notch mobile vehicle repair services. Our mission is to make vehicle maintenance and repair as convenient and hassle-free as possible. With our easy-to-use app, you can order repairs right from your phone and have our expert mechanics come to you.
                 </Typography>
                 <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.8, mt: 2 }}>

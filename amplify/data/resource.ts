@@ -33,11 +33,11 @@ const schema = a.schema({
   Applications: a.model({
     jobTitle: a.string(),
     // description: a.string(),
-    // name: a.string(),
-    // email: a.string(),
-    // phone: a.string(),
-    // reason: a.string(),
-    // resumeFileName: a.string(), // Optional: For storing resume filename
+    name: a.string(),
+    email: a.string(),
+    phone: a.string(),
+    reason: a.string(),
+    resumeFileName: a.string(), // Optional: For storing resume filename
   })
     .authorization((allow) => [allow.owner()]), // Restricts access to application owner
 });

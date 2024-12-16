@@ -14,10 +14,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 
 import { Authenticator } from "@aws-amplify/ui-react";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 
 import { generateClient } from "aws-amplify/data";
 import { Schema } from "../../amplify/data/resource";
+import { uploadData } from 'aws-amplify/storage';
 
 const client = generateClient<Schema>();
 
@@ -30,7 +32,9 @@ interface Job {
 function JobApplication() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuthenticator((context) => [context.user]); // Use the hook to get the user
   const { job } = (location.state as { job: Job }) || { job: {} };
+  const user_email = String(user.signInDetails?.loginId);
 
   const [formData, setFormData] = useState<{
     name: string;
@@ -40,7 +44,7 @@ function JobApplication() {
     resume: File | null;
   }>({
     name: "",
-    email: "",
+    email: user_email || "", // Prepopulate with the signed-up email
     phone: "",
     reason: "",
     resume: null,
@@ -72,8 +76,25 @@ function JobApplication() {
     e.preventDefault();
 
     try {
+      // Upload the resume to S3
+      if (formData.resume) {
+        uploadData({
+          path: `user/${user.signInDetails?.loginId}/${formData.resume.name}`,
+          // path: ({identityId}) => `private/${identityId}/${formData.resume!.name}`,
+          data: formData.resume,
+          options: {
+            bucket: 'shwifty-resumes',
+          },
+        });
+      }
+
       const applicationData = {
         jobTitle: job.title || "",
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        reason: formData.reason,
+        resumeFileName: `user/${user.signInDetails?.loginId}/${formData.resume?.name || ""}`, // Update to match S3 path
         // Include other fields if needed
       };
 
@@ -82,8 +103,6 @@ function JobApplication() {
       );
       console.log(data);
       console.log(errors);
-
-      // If resume upload is necessary, handle it here
 
       // Redirect after successful submission
       navigate("/applications");
